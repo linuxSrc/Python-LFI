@@ -1,4 +1,4 @@
-from flask import Flask, request,render_template
+from flask import Flask, request,render_template, send_from_directory
 from Crypto.Random import get_random_bytes
 import os
 from werkzeug.utils import secure_filename
@@ -31,5 +31,9 @@ def upload_file():
         response = f"{str(e)}" # Possible infomation disclosure if upload fails
     
     return render_template("insecure_upload.html",data=response)
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory('uploads', filename)
 
 app.run('0.0.0.0',8000)
